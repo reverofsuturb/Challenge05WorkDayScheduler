@@ -16,7 +16,7 @@ Here is a link to the website: https://reverofsuturb.github.io/Challenge05WorkDa
 
 ## Credits
 
-N/A
+DU Coding Bootcamp for the resources and starter code
 
 ## License
 
