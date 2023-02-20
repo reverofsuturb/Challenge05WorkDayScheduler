@@ -2,7 +2,9 @@ var currenthour = dayjs().hour();
 var today = $('#currentDay');
 var savebutton = $(".saveBtn");
 var divselect = $("div");
+
 // declared global variables
+
 function displaydate() { 
 today.text(dayjs().format('MMMM D, YYYY hh:mm:ss A'))
 }
@@ -23,7 +25,6 @@ divselect.each(function () {
     $(this).addClass("future");
   }
 });
-
 
 // this function will go through each div/timeblock and look at it's id and match it to the current hour, used the == selector as was having issues with the strict equality operator here so that it is comparing values instead, css class filters will be applied and removed accordingly
 
