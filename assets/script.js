@@ -1,47 +1,42 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
+var currenthour = dayjs().hour();
+var today = $('#currentDay');
 var savebutton = $(".saveBtn");
-var divid = $('div')
-savebutton.on('click', function () {
-var scheduled = $(this).siblings("#recorded").val();
-var timeblock = $(this).parent().attr("id");
-localStorage.setItem(timeblock, scheduled);
+var divselect = $("div");
+// declared global variables
+function displaydate() { 
+today.text(dayjs().format('MMMM D, YYYY'))
+}
+displaydate();
+
+// wrapped this in a function per the assignment asked, this is simply putting the date above the planner itself using dayjs, and formatted it for clarity
+
+divselect.each(function () {
+  if ($(this).attr("id") < currenthour) {
+    $(this).removeClass("future", "present");
+    $(this).addClass("past");
+  } else if ($(this).attr("id") == currenthour) {
+    $(this).removeClass("future", "past");
+    $(this).addClass("present");
+  } else if ($(this).attr("id") > currenthour) {
+    $(this).removeClass("present", "past");
+    $(this).addClass("future");
+  }
 });
 
-divid.each(function () {
-  $(this).children("#recorded").val((localStorage.getItem($(this).attr("id"))))
-})
+// this function will go through each div/timeblock and look at it's id and match it to the current hour, used the == selector as was having issues with the strict equality operator here so that it is comparing values instead, css class filters will be applied and removed accordingly
 
+savebutton.on("click", function () {
+  var scheduled = $(this).siblings("#recorded").val();
+  var timeblock = $(this).parent().attr("id");
+  localStorage.setItem(timeblock, scheduled);
+});
 
+// event listener, saving information input for each individual line by using .siblings, goes to local storage saved by the ID of the timeblock
 
+divselect.each(function () {
+  $(this)
+    .children("#recorded")
+    .val(localStorage.getItem($(this).attr("id")));
+});
 
-
-  // TODO: Add a listener for click events on the save button. This code should
-  // use the id in the containing time-block as a key to save the user input in
-  // local storage. HINT: What does `this` reference in the click listener
-  // function? How can DOM traversal be used to get the "hour-x" id of the
-  // time-block containing the button that was clicked? How might the id be
-  // useful when saving the description in local storage?
-  //
-  // TODO: Add code to apply the past, present, or future class to each time
-  // block by comparing the id to the current hour. HINTS: How can the id
-  // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
-  //
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
-  //
-  // TODO: Add code to display the current date in the header of the page.
-// });
-// <!NOTE FROM HTML-- Use class for "past", "present", and "future" to apply styles to the
-// time-block divs accordingly. The javascript will need to do this by
-// adding/removing these classes on each div by comparing the hour in the
-// id to the current hour. The html provided below is meant to be an example
-// demonstrating how the css provided can be leveraged to create the
-// desired layout and colors. The html below should be removed or updated
-// in the finished product. Remember to delete this comment once the
-// code is implemented.
-// -->
+// this function will get the saved key values by time block for each div, using the id value to get the information
